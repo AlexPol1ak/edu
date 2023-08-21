@@ -45,12 +45,12 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('description', models.TextField(blank=True)),
-                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='modules', to='courses.course')),
+                ('courses', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='modules', to='courses.courses')),
             ],
         ),
         migrations.AddField(
-            model_name='course',
+            model_name='courses',
             name='subject',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course', to='courses.subject'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='courses', to='courses.subject'),
         ),
     ]

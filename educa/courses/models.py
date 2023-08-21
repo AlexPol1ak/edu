@@ -24,7 +24,7 @@ class Course(models.Model):
     """Модель курса."""
 
     owner = models.ForeignKey(User, related_name='courses_created', on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, related_name='course', on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name='courses', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
@@ -44,7 +44,7 @@ class Module(models.Model):
                                on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    order = OrderField(blank=True, for_fields=['course'])
+    order = OrderField(blank=True, for_fields=['courses'])
 
     class Meta:
         ordering = ['order']
