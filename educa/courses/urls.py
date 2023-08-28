@@ -15,4 +15,6 @@ urlpatterns = [
          views.ContentCreateUpdateView.as_view(),
          name='model_content_update'
          ),
+    path('content/<int:id>/delete/', views.CourseDeleteView.as_view(), name='module_content_delete'),
 ]
+

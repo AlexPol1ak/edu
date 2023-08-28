@@ -88,12 +88,12 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
             return redirect('manage_course_list')
         return self.render_to_response({'course': self.course, 'formset': formset})
 
+
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     """Представление для создания/обновления контента содержимого курса."""
     module = None
     model = None
     obj = None
-    # template_name = 'manage/courses/content/form.html'
     template_name = 'manage/content/form.html'
 
     def get_model(self, model_name):
@@ -133,4 +133,14 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
 
         return self.render_to_response({'form': form, 'object': self.obj})
 
+
+class ContentDeleteView(View):
+    """Представление для удаления содержимого модуля."""
+
+    def post(self, request, id):
+        content = get_object_or_404(Content, id=id, module__course_owner=request.user)
+        module = content.module
+        content.item.delete()
+        content.delete()
+        return redirect('module_content_course', module.id)
 
