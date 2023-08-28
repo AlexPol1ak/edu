@@ -1,3 +1,4 @@
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -144,6 +145,7 @@ class ContentDeleteView(View):
         content.delete()
         return redirect('module_content_course', module.id)
 
+
 class ModuleContentListView(TemplateResponseMixin, View):
     """Представление для отображения модуля."""
     template_name = 'manage/module/content_list.html'
@@ -153,5 +155,22 @@ class ModuleContentListView(TemplateResponseMixin, View):
         return self.render_to_response({'module': module})
 
 
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """Представление получает новый порядок следования модулей курса в JSON и обновляет его."""
+
+    # Для реализации упорядочивания перетаскиванием
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
 
 
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """Представление получает новый порядок следования контента модуля в JSON и обновляет его."""
+
+    def post(self, request):
+        for id , order in self.request_json.items():
+            Content.objects.filter(id=id, module__course__owner=request.user).update(order=order)
+
+        return self.render_json_response({'saved': 'OK'})
