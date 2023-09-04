@@ -1,5 +1,5 @@
 from rest_framework import generics
-from courses.models import Subject
+from courses.models import Subject, Course
 from courses.api.serializers import SubjectSerializer
 
 class SubjectApiListView(generics.ListAPIView):
