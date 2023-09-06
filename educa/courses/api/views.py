@@ -9,11 +9,15 @@ from courses.api.serializers import SubjectSerializer, CourseSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from courses.api.permissions import IsEnrolled
+from courses.api.serializers import CourseWithContentsSerializer
+
 
 class SubjectApiListView(generics.ListAPIView):
     """Представление для отображения всех курсов."""
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
 
 class SubjectApiDetailView(generics.RetrieveAPIView):
     """Представление для отображения курса детально."""
@@ -40,11 +44,24 @@ class CourseEnrollApiView(APIView):
             authentication_classes=[BasicAuthentication],
             permission_classes=[IsAuthenticated])
     def enroll(self, request, *args, **kwargs):
+        """Действие представления для записи пользователя на курс."""
         course = self.get_object()
         course.students.add(request.user)
         return Response({'enrolled': True})
+
 
 class CourseApiViewSet(viewsets.ReadOnlyModelViewSet):
     """Набор представлений для чтения курсов."""
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+    @action(
+        detail=True,
+        methods=['get'],
+        serializer_class=CourseWithContentsSerializer,
+        authentication_classes=[BasicAuthentication],
+        permission_classes=[IsAuthenticated, IsEnrolled]
+    )
+    def contents(self, request, *args, **kwargs):
+        """Действие представления для отображения курса, модуля и контента детально."""
+        return self.retrieve(request, *args, **kwargs)
