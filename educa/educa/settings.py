@@ -39,11 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
+    'chat',
     'embed_video',
     'debug_toolbar',
     'redisboard',
     'rest_framework',
-    'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,8 @@ REST_FRAMEWORK = {
     ],
 }
 
+ASGI_APPLICATION = 'educa.asgi.application' #?
+
 INTERNAL_IPS = ['127.0.0.1']
+
+
