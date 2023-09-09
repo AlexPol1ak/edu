@@ -11,7 +11,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """Устанавливает соединение."""
         self.user = self.scope['user']
         self.id = self.scope['url_route']['kwargs']['course_id']
-        self.room_group_name = f'chat_{self.id}'
+        self.room_group_name = 'chat_%s' % self.id
         # Присоединиться к группе чат-комнаты
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         # Принять соединение
@@ -26,13 +26,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         """Получает сообщение из web-socket."""
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        now = timezone.now()
         # Отправить сообщение в группу чат-комнаты.
-        self.channel_layer.group_send(self.room_group_name,
+        await self.channel_layer.group_send(self.room_group_name,
                                       {
                                           'type': 'chat_message',
                                           'message': message,
                                           'user': self.user.username,
-                                          'datetime': timezone.now().isoformat(),
+                                          'datetime': now.isoformat(),
                                       }
                                       )
 
