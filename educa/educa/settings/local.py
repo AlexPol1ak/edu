@@ -11,9 +11,8 @@ from .base import *
 env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
 load_dotenv(env_file)
 
-
 SECRET_KEY = os.environ['SECRET_KEY']
-DEBUG = True if os.environ['DEBUG'] == '1' else False
+DEBUG = True if os.environ.get('DEBUG', 0) == '1' else False
 
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
@@ -30,14 +29,10 @@ DATABASES = {
     }
 }
 
-
-
 REDIS_PREFIX = os.environ['REDIS_PREFIX']
 REDIS_HOST = os.environ['REDIS_HOST']
 REDIS_PORT = os.environ['REDIS_PORT']
 REDIS_URL = f"{REDIS_PREFIX}://{REDIS_HOST}:{REDIS_PORT}"
-#'redis://127.0.0.1:6379',
-# print(REDIS_URL)
 
 CACHES['default']['LOCATION'] = REDIS_URL
-CHANNEL_LAYERS['CONFIG']['hosts'] = [(REDIS_HOST, REDIS_PORT),]
+CHANNEL_LAYERS['CONFIG']['hosts'] = [(REDIS_HOST, REDIS_PORT), ]
