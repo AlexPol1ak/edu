@@ -40,13 +40,13 @@ class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin, PermissionRequiredMixin):
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     """Миксин предоставляет форму."""
-    template_name = 'manage/courses/form.html'
+    template_name = 'courses/form.html'
 
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
     """Представление для отображения всех курсов автора."""
     model = Course
-    template_name = 'manage/courses/list.html'
+    template_name = 'courses/list.html'
     permission_required = 'courses.view_course'
 
     def get_queryset(self):
@@ -66,7 +66,7 @@ class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
 
 class CourseDeleteView(OwnerCourseMixin, DeleteView):
     """Представление для удаления курса."""
-    template_name = 'manage/courses/delete.html'
+    template_name = 'courses/delete.html'
     permission_required = 'courses.delete_course'
 
 
