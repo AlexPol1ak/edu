@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 from courses.views import CourseListView
 
 from educa import settings
+from educa.settings import local
 
 urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
@@ -19,5 +20,5 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat'))
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if local.DEBUG:
+    urlpatterns += static(local.MEDIA_URL, document_root=local.MEDIA_ROOT)
