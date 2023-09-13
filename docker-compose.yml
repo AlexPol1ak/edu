@@ -1,4 +1,6 @@
 version: '3'
+# docker-compose --env-file .vps.env up
+
 services:
   db:
     container_name: ${DB_CONTAINER_NAME}
@@ -6,7 +8,12 @@ services:
     restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    env_file: .vps.env
+#    env_file:
+#      - .vps.env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
@@ -19,9 +26,11 @@ services:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
     #command: ["./wait-for-it.sh", "db:5432", "--", "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini"]
-    command: "python edu/educa/manage.py runserver 0.0.0.0"
+    command: "python educa/manage.py runserver 0.0.0.0:8000 --settings=educa.settings.prod_vps"
     restart: always
     env_file: .vps.env
+    ports:
+      - '8000:8000'
     volumes:
       - .:/code
     environment:

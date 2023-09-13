@@ -25,12 +25,12 @@ DATABASES = {
     }
 }
 
+
 REDIS_PREFIX = os.environ['REDIS_PREFIX']
 REDIS_HOST = os.environ['REDIS_HOST']
 REDIS_PORT = os.environ['REDIS_PORT']
 REDIS_URL = f"{REDIS_PREFIX}://{REDIS_HOST}:{REDIS_PORT}"
 
-CACHES['default', 'LOCATION'] = REDIS_URL
-# CHANNEL_LAYERS['default', 'CONFIG', 'hosts'] = [REDIS_URL]
-CHANNEL_LAYERS['default', 'CONFIG'] = {'hosts': [REDIS_URL]}
+CACHES['default']['LOCATION'] = REDIS_URL
+CHANNEL_LAYERS['default']['CONFIG'] = {'hosts': [REDIS_URL]}
 
