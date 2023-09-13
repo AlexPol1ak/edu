@@ -7,6 +7,7 @@ from .base import *
 # docker run -it -d --rm --name redis -p 6379:6379 redis
 
 # python manage.py runserver --settings=educa.settings.local
+print('educa.settings.local')
 
 env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
 load_dotenv(env_file)
