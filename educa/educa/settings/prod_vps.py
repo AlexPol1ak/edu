@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 from .base import *
+print('educa.settings.prod_vps')
 
 env_file = os.path.join(BASE_DIR.parent, '.vps.env')
 load_dotenv(env_file)
@@ -33,4 +34,9 @@ REDIS_URL = f"{REDIS_PREFIX}://{REDIS_HOST}:{REDIS_PORT}"
 
 CACHES['default']['LOCATION'] = REDIS_URL
 CHANNEL_LAYERS['default']['CONFIG'] = {'hosts': [REDIS_URL]}
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
 

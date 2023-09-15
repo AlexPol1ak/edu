@@ -22,15 +22,31 @@ services:
     volumes:
       - ./data/cache:/data
 
+  daphne:
+    container_name: ${DAPHNE_CONTAINER_NAME}
+    build: .
+    working_dir: /code/educa/
+    command: ["../wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
+              "educa.asgi:application"]
+    restart: always
+    volumes:
+      - .:/code
+    env_file: .vps.env
+    depends_on:
+      - db
+      - redis
+
   web:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
-    #command: ["./wait-for-it.sh", "db:5432", "--", "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini"]
-    command: "python educa/manage.py runserver 0.0.0.0:8000 --settings=educa.settings.prod_vps"
-    restart: always
+#    command: "python educa/manage.py runserver 0.0.0.0:8000"
+#    command: ["./wait-for-it.sh", "db:5432", "--", "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini"]
+#    command: "daphne educa.educa.wsgi:application"
+#    command: ["./wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
+#              "educa.educa.asgi:application"]
+    command: "gunicorn educa.educa.wsgi:application --bind 0.0.0.0:8000"
+    #    restart: always
     env_file: .vps.env
-    ports:
-      - '8000:8000'
     volumes:
       - .:/code
     environment:
@@ -46,11 +62,13 @@ services:
     ports:
       - 8080:8080
 
-#  nginx:
-#    image: nginx:1.23.1
-#    restart: always
-#    volumes:
-#      - ./config/nginx:/etc/nginx/templates
-#      - .:/code
-#    ports:
-#      - "80:80"
+  nginx:
+    container_name: ${NGINX_CONTAINER_NAME}
+    image: nginx:1.23.1
+    restart: always
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+      - "80:80"
+      - "443:443"
