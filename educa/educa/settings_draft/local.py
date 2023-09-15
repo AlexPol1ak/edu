@@ -6,11 +6,11 @@ from .base import *
 # docker run -d -it --rm --name memcached -p 11211:11211 memcached -m 64
 # docker run -it -d --rm --name redis -p 6379:6379 redis
 
-# python manage.py runserver --settings=educa.settings.local
-print('educa.settings.local')
+# python manage.py runserver --settings_draft=educa.settings_draft.local
+print('educa.settings_draft.local')
 
-env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
-load_dotenv(env_file)
+# env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
+# load_dotenv(env_file)
 
 SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True if os.environ.get('DEBUG', 0) == '1' else False

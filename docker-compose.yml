@@ -39,18 +39,11 @@ services:
   web:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
-#    command: "python educa/manage.py runserver 0.0.0.0:8000"
-#    command: ["./wait-for-it.sh", "db:5432", "--", "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini"]
-#    command: "daphne educa.educa.wsgi:application"
-#    command: ["./wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
-#              "educa.educa.asgi:application"]
-    command: "gunicorn educa.educa.wsgi:application --bind 0.0.0.0:8000"
-    #    restart: always
-    env_file: .vps.env
+    command: sh -c "cd /code/educa && gunicorn educa.wsgi:application --bind 0.0.0.0:8000"
+#    command: sh -c "./wait-for-it.sh db:5432 && cd /code/educa && daphne educa.asgi:application"
+    restart: always
     volumes:
       - .:/code
-    environment:
-      - DJANGO_SETTINGS_MODULE=educa.settings.prod_vps
     depends_on: 
       - db
       - redis

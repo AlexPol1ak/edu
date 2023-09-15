@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 
 from .base import *
-print('educa.settings.prod_vps')
 
-env_file = os.path.join(BASE_DIR.parent, '.vps.env')
+env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
+# env_file = os.path.join(BASE_DIR.parent, '.vps.env')
 load_dotenv(env_file)
 
 SECRET_KEY = os.environ['SECRET_KEY']

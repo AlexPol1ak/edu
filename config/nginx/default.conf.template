@@ -2,14 +2,18 @@ upstream daphne_app {
     server unix:/code/educa/daphne.sock;
 }
 
-upstream daphne{
-    server unix:/code/educa/daphne.sock;
+upstream educa {
+    server web:8000;
 }
 
 server {
     listen 80;
-    server_name www.educaproject.com educaproject.com;
-    return 301 https://$host$request_uri;
+    location / {
+        proxy_pass http://educa;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
 
 }
 
@@ -17,13 +21,8 @@ server {
     listen 443 ssl;
     ssl_certificate /code/educa/ssl/educa.crt;
     ssl_certificate_key /code/educa/ssl/educa.key;
-    server_name www.educaproject.com educaproject.com;
     error_log stderr warn;
     access_log /dev/stdout main;
-
-    location / {
-        proxy_http_version 1.1;
-    }
 
     location /ws/{
         proxy_http_version 1.1;
