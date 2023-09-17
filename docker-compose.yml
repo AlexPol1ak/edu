@@ -22,31 +22,32 @@ services:
     volumes:
       - ./data/cache:/data
 
-  daphne:
-    container_name: ${DAPHNE_CONTAINER_NAME}
-    build: .
-    working_dir: /code/educa/
-    command: ["../wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
-              "educa.asgi:application"]
-    restart: always
-    volumes:
-      - .:/code
-    env_file: .vps.env
-    depends_on:
-      - db
-      - redis
-
   web:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
-    command: sh -c "cd /code/educa && gunicorn educa.wsgi:application --bind 0.0.0.0:8000"
-#    command: sh -c "./wait-for-it.sh db:5432 && cd /code/educa && daphne educa.asgi:application"
-    restart: always
+    command: ["./wait-for-it.sh", "${DB_CONTAINER_NAME}:5432", "--", "sh", "./educa/docker-entrypoint.sh"]
+
+#    restart: always
     volumes:
       - .:/code
+      - ./config/gunicorn/gunicorn.service:/etc/systemd/system/gunicorn.service
     depends_on: 
       - db
       - redis
+    expose:
+      - 8000
+
+  nginx:
+    container_name: ${NGINX_CONTAINER_NAME}
+    build: ./config/nginx
+#    restart: always
+    volumes:
+      - .:/code
+    ports:
+      - "1337:80"
+#      - "443:443"
+    env_file:
+      - .vps.env
 
   adminer:
     container_name: ${ADMINER_CONTAINER_NAME}
@@ -55,13 +56,17 @@ services:
     ports:
       - 8080:8080
 
-  nginx:
-    container_name: ${NGINX_CONTAINER_NAME}
-    image: nginx:1.23.1
-    restart: always
-    volumes:
-      - ./config/nginx:/etc/nginx/templates
-      - .:/code
-    ports:
-      - "80:80"
-      - "443:443"
+
+#  daphne:
+#    container_name: ${DAPHNE_CONTAINER_NAME}
+#    build: .
+#    working_dir: /code/educa/
+#    command: ["../wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
+#              "educa.asgi:application"]
+#    restart: always
+#    volumes:
+#      - .:/code
+#    env_file: .vps.env
+#    depends_on:
+#      - db
+#      - redis
