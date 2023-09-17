@@ -28,6 +28,7 @@ services:
     volumes:
       - ./educa:/educa
 #      - ./config/gunicorn/gunicorn.service:/etc/systemd/system/gunicorn.service
+#      - ./config/gunicorn/gunicorn.socket:/etc/systemd/system/gunicorn.socket
     env_file:
       - .vps.env
     depends_on: 
