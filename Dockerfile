@@ -5,10 +5,10 @@ LABEL authors="Alex"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /code
+WORKDIR /educa
 
-COPY requirements.txt /code/
+COPY requirements.txt /educa/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-COPY educa /code/
+COPY educa /educa/

@@ -8,8 +8,6 @@ services:
     restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
-#    env_file:
-#      - .vps.env
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -25,12 +23,13 @@ services:
   web:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
-    command: ["./wait-for-it.sh", "${DB_CONTAINER_NAME}:5432", "--", "sh", "./educa/docker-entrypoint.sh"]
-
+    command: ["sh", "./docker-entrypoint.sh"]
 #    restart: always
     volumes:
-      - .:/code
-      - ./config/gunicorn/gunicorn.service:/etc/systemd/system/gunicorn.service
+      - ./educa:/educa
+#      - ./config/gunicorn/gunicorn.service:/etc/systemd/system/gunicorn.service
+    env_file:
+      - .vps.env
     depends_on: 
       - db
       - redis
@@ -42,19 +41,22 @@ services:
     build: ./config/nginx
 #    restart: always
     volumes:
-      - .:/code
+      - ./educa:/educa
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - "1337:80"
 #      - "443:443"
     env_file:
       - .vps.env
+    depends_on:
+      - web
 
-  adminer:
-    container_name: ${ADMINER_CONTAINER_NAME}
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+#  adminer:
+#    container_name: ${ADMINER_CONTAINER_NAME}
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
 
 
 #  daphne:

@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
-env_file = os.path.join(BASE_DIR.parent, '.vps.env')
-load_dotenv(env_file)
+# load_dotenv(env_file)
+
+load_dotenv()
 
 print(f"{'*' * 25}\n Load {os.environ['ENV_NAME']}\n{'*' * 25}\n")
 
