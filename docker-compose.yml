@@ -51,13 +51,16 @@ services:
       - .vps.env
     depends_on:
       - web
+      - adminer
 
-#  adminer:
-#    container_name: ${ADMINER_CONTAINER_NAME}
-#    image: adminer
-#    restart: always
-#    ports:
-#      - 8080:8080
+  adminer:
+    container_name: ${ADMINER_CONTAINER_NAME}
+    image: adminer
+    restart: always
+    expose:
+      - 8080
+    depends_on:
+      - db
 
 
 #  daphne:
