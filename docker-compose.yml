@@ -46,12 +46,13 @@ services:
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - "1337:80"
-#      - "443:443"
+      - "443:443"
     env_file:
       - .vps.env
     depends_on:
       - web
       - adminer
+      - chat
 
   adminer:
     container_name: ${ADMINER_CONTAINER_NAME}
@@ -62,17 +63,15 @@ services:
     depends_on:
       - db
 
-
-#  daphne:
-#    container_name: ${DAPHNE_CONTAINER_NAME}
-#    build: .
-#    working_dir: /code/educa/
-#    command: ["../wait-for-it.sh", "db:5432", "--", "daphne", "-u", "/code/educa/daphne.sock",
-#              "educa.asgi:application"]
+  chat:
+    container_name: ${DAPHNE_CONTAINER_NAME}
+    build: .
+    working_dir: /educa
+    command: ["sh", "./docker-entrypoint_chat.sh"]
 #    restart: always
-#    volumes:
-#      - .:/code
-#    env_file: .vps.env
-#    depends_on:
-#      - db
-#      - redis
+    volumes:
+      - ./educa:/educa
+    env_file: .vps.env
+    depends_on:
+      - db
+      - redis
