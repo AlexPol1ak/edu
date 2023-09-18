@@ -45,8 +45,7 @@ services:
       - ./educa:/educa
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
-      - "1338:80"
-      - "443:443"
+      - ${NG_EXT_PORT1}:${NG_INT_PORT1}
     env_file:
       - .vps.env
     depends_on:
@@ -75,3 +74,5 @@ services:
     depends_on:
       - db
       - redis
+    expose:
+      - 443

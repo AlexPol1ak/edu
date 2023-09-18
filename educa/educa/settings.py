@@ -16,8 +16,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True if os.environ['DEBUG'] == '1' else False
 
 # Disclose on deposition
-# ADMINS = [(os.environ['ADMIN_NAME'], os.environ['ADMIN_EMAIL'])]
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
+
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
