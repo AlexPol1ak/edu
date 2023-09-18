@@ -45,7 +45,7 @@ services:
       - ./educa:/educa
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
-      - "1337:80"
+      - "1338:80"
       - "443:443"
     env_file:
       - .vps.env
