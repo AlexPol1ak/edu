@@ -18,8 +18,9 @@ DEBUG = True if os.environ['DEBUG'] == '1' else False
 # Disclose on deposition
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -101,7 +102,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -141,6 +142,6 @@ ASGI_APPLICATION = 'educa.asgi.application'
 INTERNAL_IPS = ['127.0.0.1']
 
 # Disclose on deposition
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True

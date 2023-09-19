@@ -19,6 +19,8 @@ services:
     restart: always
     volumes:
       - ./data/cache:/data
+    expose:
+      - ${REDIS_PORT}
 
   web:
     container_name: ${DJANGO_CONTAINER_NAME}
@@ -46,6 +48,7 @@ services:
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - ${NG_EXT_PORT1}:${NG_INT_PORT1}
+      - ${NG_EXT_PORT2}:${NG_INT_PORT2}
     env_file:
       - .vps.env
     depends_on:
