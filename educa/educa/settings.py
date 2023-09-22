@@ -132,8 +132,9 @@ CACHES = {
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {'hosts': [(REDIS_HOST, int(REDIS_PORT))]},
     },
-    'CONFIG': {'hosts': [REDIS_URL]},
+
 }
 
 WSGI_APPLICATION = 'educa.wsgi.application'
