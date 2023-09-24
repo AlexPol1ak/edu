@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
-# load_dotenv(env_file)
+env_file = os.path.join(BASE_DIR.parent, '.local_dev.env')
+load_dotenv(env_file)
 
-load_dotenv()
+# load_dotenv()
 
 print(f"{'*' * 25}\n Load {os.environ['ENV_NAME']}\n{'*' * 25}\n")
 
@@ -19,7 +19,7 @@ DEBUG = True if os.environ['DEBUG'] == '1' else False
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
+# CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
 
 
 INSTALLED_APPS = [
@@ -109,6 +109,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
+LOGOUT_REDIRECT_URL = reverse_lazy('student_registration')
 
 REDIS_PREFIX = os.environ['REDIS_PREFIX']
 REDIS_HOST = os.environ['REDIS_HOST']
