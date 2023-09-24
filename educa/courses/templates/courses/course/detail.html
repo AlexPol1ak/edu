@@ -21,7 +21,12 @@
                 <form action="{% url 'student_enroll_course' %}" method='post'>
                     {{ enroll_form }}
                     {% csrf_token %}
-                    <input type="submit" value="Enroll now">
+
+                    {% if request.user in object.students.all %}
+                        <input type="submit" value="Open the course">
+                    {% else %}
+                        <input type="submit" value="Enroll now">
+                    {% endif %}
                 </form>
             {% else %}
                 <a href="{% url 'student_registration' %}" class='button'>
