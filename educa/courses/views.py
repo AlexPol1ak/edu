@@ -14,33 +14,7 @@ from .models import Course, Module, Content, Subject
 from django.apps import apps
 from django.forms.models import modelform_factory
 
-
-class OwnerMixin:
-    """Миксин для отображения всех курсов автора."""
-
-    def get_queryset(self):
-        qr = super().get_queryset()
-        return qr.filter(owner=self.request.user)
-
-
-class OwnerEditMixin:
-    """Миксин для определения владельца"""
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
-
-
-class OwnerCourseMixin(OwnerMixin, LoginRequiredMixin, PermissionRequiredMixin):
-    """Миксин предоставляет форму создания курса."""
-    model = Course
-    fields = ['subject', 'title', 'slug', 'overview']
-    success_url = reverse_lazy('manage_course_list')
-
-
-class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
-    """Миксин предоставляет форму."""
-    template_name = 'courses/form.html'
+from .views_mixins import OwnerCourseEditMixin, OwnerCourseMixin
 
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
