@@ -26,7 +26,7 @@ services:
     container_name: ${DJANGO_CONTAINER_NAME}
     build: .
     command: ["sh", "./docker-entrypoint.sh"]
-#    restart: always
+    restart: always
     volumes:
       - ./educa:/educa
 #      - ./config/gunicorn/gunicorn.service:/etc/systemd/system/gunicorn.service
@@ -42,7 +42,7 @@ services:
   nginx:
     container_name: ${NGINX_CONTAINER_NAME}
     build: ./config/nginx
-#    restart: always
+    restart: always
     volumes:
       - ./educa:/educa
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
@@ -70,7 +70,7 @@ services:
     build: .
     working_dir: /educa
     command: ["sh", "./docker-entrypoint_chat.sh"]
-#    restart: always
+    restart: always
     volumes:
       - ./educa:/educa
     env_file: .vps.env
