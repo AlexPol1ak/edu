@@ -10,16 +10,21 @@ load_dotenv(env_file)
 
 # load_dotenv()
 
-print(f"{'*' * 25}\n Load {os.environ['ENV_NAME']}\n{'*' * 25}\n")
-
 SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = True if os.environ['DEBUG'] == '1' else False
+
+print(f"{'*' * 25}\n Load {os.environ['ENV_NAME']}\n{'*' * 25}\nDEBUG={DEBUG}\n{'*' * 25}\n")
 
 # Disclose on deposition
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
+URLS_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
+CSRF_TRUSTED_ORIGINS = []
+for url in URLS_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.extend(['https://'+url, 'http://'+url])
+print(CSRF_TRUSTED_ORIGINS)
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
 
 
 INSTALLED_APPS = [
@@ -101,10 +106,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    (os.path.join(BASE_DIR, "courses/static")),
+]
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -144,6 +152,6 @@ ASGI_APPLICATION = 'educa.asgi.application'
 INTERNAL_IPS = ['127.0.0.1']
 
 # Disclose on deposition
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True

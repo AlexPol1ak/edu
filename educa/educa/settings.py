@@ -18,8 +18,12 @@ DEBUG = True if os.environ['DEBUG'] == '1' else False
 # Disclose on deposition
 ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(' ')
 
+URLS_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
+CSRF_TRUSTED_ORIGINS = []
+for url in URLS_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.extend(['https://'+url, 'http://'+url])
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# CSRF_TRUSTED_ORIGINS = os.environ['CSRF_TRUSTED_ORIGINS'].split(' ')
 
 
 INSTALLED_APPS = [
