@@ -117,7 +117,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
-LOGOUT_REDIRECT_URL = reverse_lazy('student_registration')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 REDIS_PREFIX = os.environ['REDIS_PREFIX']
 REDIS_HOST = os.environ['REDIS_HOST']
